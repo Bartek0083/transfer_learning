@@ -1,1 +1,151 @@
-# transfer_learning
+# 🐦 Klasyfikacja Gatunków Ptaków — Transfer Learning
+
+Edukacyjny projekt klasyfikacji obrazów z wykorzystaniem **transfer learningu**
+i modelu **EfficientNet-B0** pretrenowanego na ImageNet.
+
+## 📋 Opis projektu
+
+Projekt rozpoznaje **25 gatunków ptaków** na zdjęciach. Wykorzystuje technikę
+transfer learningu w dwóch fazach:
+
+1. **Feature Extraction** — zamrożone warstwy bazowe, trening nowego klasyfikatora
+2. **Fine-Tuning** — odmrożone warstwy, delikatne dostrojenie całego modelu
+
+## 🗂️ Struktura projektu
+
+```
+bird_classification/
+├── train.py              # Skrypt treningowy (CLI)
+├── notebook.ipynb        # Jupyter Notebook (krok po kroku)
+├── requirements.txt      # Zależności Python
+├── README.md             # Ten plik
+├── data/                 # Dane (do pobrania)
+│   ├── train/
+│   ├── val/
+│   └── test/
+└── output/               # Wyniki (generowane automatycznie)
+    ├── bird_classifier.pth
+    ├── metadata.json
+    ├── training_history.png
+    └── confusion_matrix.png
+```
+
+## 🚀 Szybki start
+
+### 1. Instalacja
+
+```bash
+pip install -r requirements.txt
+```
+
+### 2. Przygotowanie danych
+
+#### Opcja A: Dane demo (do testowania)
+Skrypt automatycznie wygeneruje syntetyczne dane demo. Wystarczy uruchomić trening.
+
+#### Opcja B: Prawdziwe dane (zalecane)
+Pobierz dataset i umieść w katalogu `data/`:
+
+- **[Birds 525 Species (Kaggle)](https://www.kaggle.com/datasets/gpiosenka/100-bird-species)** — 525 gatunków, ~90k obrazów
+- **[CUB-200-2011](https://www.vision.caltech.edu/datasets/cub_200_2011/)** — 200 gatunków, ~12k obrazów
+
+Dane powinny mieć strukturę:
+```
+data/
+├── train/
+│   ├── Gatunek_1/
+│   │   ├── img001.jpg
+│   │   └── ...
+│   ├── Gatunek_2/
+│   └── ...
+├── val/
+└── test/
+```
+
+### 3. Trening
+
+#### Skrypt Python:
+```bash
+python train.py
+```
+
+#### Z parametrami:
+```bash
+python train.py --num_epochs 30 --batch_size 64 --learning_rate 0.001
+```
+
+#### Jupyter Notebook:
+```bash
+jupyter notebook notebook.ipynb
+```
+
+## ⚙️ Hiperparametry
+
+| Parametr | Domyślna wartość | Opis |
+|----------|-----------------|------|
+| `--num_epochs` | 20 | Całkowita liczba epok |
+| `--freeze_epochs` | 5 | Epoki z zamrożonymi warstwami |
+| `--batch_size` | 32 | Rozmiar batcha |
+| `--learning_rate` | 0.001 | LR dla feature extraction |
+| `--fine_tune_lr` | 0.0001 | LR dla fine-tuningu |
+| `--image_size` | 224 | Rozmiar obrazu wejściowego |
+| `--patience` | 5 | Early stopping patience |
+| `--data_dir` | ./data | Ścieżka do danych |
+| `--output_dir` | ./output | Ścieżka do wyników |
+
+## 📊 Techniki zastosowane
+
+- **Transfer Learning** z EfficientNet-B0 (ImageNet)
+- **Dwufazowy trening**: Feature Extraction → Fine-Tuning
+- **Augmentacja danych**: RandomCrop, Flip, Rotation, ColorJitter
+- **Early Stopping** — zapobiega przeuczeniu
+- **Learning Rate Scheduling** — ReduceLROnPlateau
+- **Differential Learning Rates** — różne LR dla różnych warstw
+
+## 🔮 Predykcja na nowym zdjęciu
+
+```python
+from train import predict_image, create_data_transforms
+import torch
+from torchvision import models
+import torch.nn as nn
+
+# Załaduj model
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+checkpoint = torch.load('output/bird_classifier.pth', map_location=device)
+
+model = models.efficientnet_b0(weights=None)
+nf = model.classifier[1].in_features
+model.classifier = nn.Sequential(
+    nn.Dropout(0.3), nn.Linear(nf, 512), nn.ReLU(),
+    nn.Dropout(0.2), nn.Linear(512, checkpoint['num_classes']))
+model.load_state_dict(checkpoint['model_state_dict'])
+model = model.to(device)
+model.eval()
+
+# Predykcja
+transforms = create_data_transforms()
+predicted, confidence, top5 = predict_image(
+    model, 'path/to/bird.jpg', checkpoint['class_names'], transforms, device)
+
+print(f'Gatunek: {predicted} ({confidence:.1%})')
+```
+
+## 📚 Dalsze kroki
+
+1. **Lepsze dane** — użyj prawdziwego datasetu (Kaggle Birds 525)
+2. **Większy model** — EfficientNet-B3 lub B4
+3. **Zaawansowana augmentacja** — Mixup, CutMix, RandomErasing
+4. **Test Time Augmentation** — uśrednianie predykcji
+5. **Ensemble** — połączenie kilku modeli
+6. **Interfejs webowy** — Gradio lub Streamlit
+7. **Deployment** — ONNX, TorchScript, lub TensorRT
+
+## 📖 Zasoby edukacyjne
+
+- [PyTorch Transfer Learning Tutorial](https://pytorch.org/tutorials/beginner/transfer_learning_tutorial.html)
+- [EfficientNet Paper (Tan & Le, 2019)](https://arxiv.org/abs/1905.11946)
+- [CS231n: Transfer Learning](https://cs231n.github.io/transfer-learning/)
+
+---
+*Wygenerowano z pomocą Claude (Anthropic)*
