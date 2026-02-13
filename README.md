@@ -15,12 +15,11 @@ transfer learningu w dwóch fazach:
 
 ```
 bird_classification/
-├── birds_train.py              # Skrypt treningowy (CLI)
-├── notebook.ipynb        # Jupyter Notebook (krok po kroku)
+├── birds_train.py        # Skrypt treningowy (CLI)
+├── predict.py            # Ewaluacja modelu i predykcje
+├── split_dataset.py      # Podział CUB-200-2011 na train/val/test
+├── select_species.py     # Ograniczenie liczby gatunków
 ├── requirements.txt      # Zależności Python
-├── split_dataset.py
-├── select_species.py
-├── predict.py
 ├── README.md             # Ten plik
 ├── data/                 # Dane (tworzone za pomocą skryptu split_dataset.py)
 │   ├── train/
@@ -68,35 +67,79 @@ data/
 ├── val/
 └── test/
 ```
-#### Skrypty do pomocy
-Do projektu zostały dołączone skrypty `select_species.py` `split_dataset.py` pozwalające na łatwiejsze kopiowanie obrazów z datasetu CUD-200-2011 do folderu data w sposób randomowy.
-Wystarczy że do projektu wrzucisz folder CUD-200-2011/images z pobranej paczki (patrz Opcja B).
 
-#### Podział datasetu CUD-200-2011 (jeśli wybierzesz opcje B)
+#### Skrypty do pomocy
+Do projektu zostały dołączone skrypty `select_species.py` i `split_dataset.py` pozwalające na łatwiejsze kopiowanie obrazów z datasetu CUB-200-2011 do folderu data w sposób randomowy.
+Wystarczy że do projektu wrzucisz folder CUB-200-2011/images z pobranej paczki (patrz Opcja B).
+
+#### Podział datasetu CUB-200-2011 (jeśli wybierzesz opcję B)
 ```bash
 python split_dataset.py --source ./CUB_200_2011/images --output ./data
 ```
 
 #### Ograniczenie od 1 do 200 gatunków
-Jeśli chcesz możesz wybrać dowolne ograniczenie sprawdzanych gatunków np. 50 
+Jeśli chcesz możesz wybrać dowolne ograniczenie sprawdzanych gatunków np. 50
 
 ```bash
 python select_species.py --data_dir ./data --num_species 50
 ```
+
 ### 3. Trening
 
-#### Skrypt Python:
 ```bash
 python birds_train.py
 ```
 
-#### Z parametrami:
+Z własnymi parametrami:
 ```bash
 python birds_train.py --num_epochs 30 --batch_size 64 --learning_rate 0.001
 ```
 
+### 4. Ewaluacja i predykcje
 
-## ⚙️ Hiperparametry
+#### Ewaluacja na zbiorze testowym
+Po zakończeniu treningu uruchom ewaluację, aby uzyskać pełny raport z metrykami i wizualizacjami:
+
+```bash
+python predict.py
+```
+
+Z własnymi ścieżkami:
+```bash
+python predict.py --model ./output/bird_classifier.pth --test_dir ./data/test
+```
+
+#### Predykcja na pojedynczym zdjęciu
+Możesz też sklasyfikować dowolne zdjęcie ptaka:
+
+```bash
+python predict.py --image ./zdjecie_ptaka.jpg
+```
+
+#### Co generuje predict.py
+Po ewaluacji na zbiorze testowym skrypt zapisuje wyniki w `output/predictions/`:
+
+| Plik | Opis |
+|------|------|
+| `report.json` | Pełny raport z metrykami (accuracy, precision, recall, F1 per gatunek) |
+| `confusion_matrix.png` | Macierz pomyłek — które gatunki model myli ze sobą |
+| `f1_per_class.png` | Wykres F1-Score dla każdego gatunku |
+| `error_examples.png` | Przykłady błędnych predykcji z prawdziwą i przewidzianą klasą |
+| `correct_examples.png` | Przykłady poprawnych predykcji |
+
+#### Parametry predict.py
+
+| Parametr | Domyślna wartość | Opis |
+|----------|-----------------|------|
+| `--model` | ./output/bird_classifier.pth | Ścieżka do wytrenowanego modelu |
+| `--test_dir` | ./data/test | Ścieżka do folderu testowego |
+| `--image` | — | Ścieżka do pojedynczego zdjęcia (opcjonalne) |
+| `--output_dir` | ./output/predictions | Gdzie zapisać wyniki |
+| `--batch_size` | 32 | Rozmiar batcha |
+| `--top_k` | 5 | Ile najlepszych predykcji pokazać |
+| `--show_errors` | 16 | Ile błędnych predykcji pokazać na wizualizacji |
+
+## ⚙️ Hiperparametry treningu
 
 | Parametr | Domyślna wartość | Opis |
 |----------|-----------------|------|
@@ -119,10 +162,10 @@ python birds_train.py --num_epochs 30 --batch_size 64 --learning_rate 0.001
 - **Learning Rate Scheduling** — ReduceLROnPlateau
 - **Differential Learning Rates** — różne LR dla różnych warstw
 
-## 🔮 Predykcja na nowym zdjęciu
+## 🔮 Predykcja na nowym zdjęciu (w kodzie Python)
 
 ```python
-from train import predict_image, create_data_transforms
+from birds_train import predict_image, create_data_transforms
 import torch
 from torchvision import models
 import torch.nn as nn
@@ -153,5 +196,3 @@ print(f'Gatunek: {predicted} ({confidence:.1%})')
 - [PyTorch Transfer Learning Tutorial](https://pytorch.org/tutorials/beginner/transfer_learning_tutorial.html)
 - [EfficientNet Paper (Tan & Le, 2019)](https://arxiv.org/abs/1905.11946)
 - [CS231n: Transfer Learning](https://cs231n.github.io/transfer-learning/)
-
-
