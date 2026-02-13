@@ -84,7 +84,7 @@ jupyter notebook notebook.ipynb
 |----------|-----------------|------|
 | `--num_epochs` | 20 | Całkowita liczba epok |
 | `--freeze_epochs` | 5 | Epoki z zamrożonymi warstwami |
-| `--batch_size` | 32 | Rozmiar batcha |
+| `--batch_size` | 16 | Rozmiar batcha |
 | `--learning_rate` | 0.001 | LR dla feature extraction |
 | `--fine_tune_lr` | 0.0001 | LR dla fine-tuningu |
 | `--image_size` | 224 | Rozmiar obrazu wejściowego |
@@ -136,5 +136,4 @@ print(f'Gatunek: {predicted} ({confidence:.1%})')
 - [EfficientNet Paper (Tan & Le, 2019)](https://arxiv.org/abs/1905.11946)
 - [CS231n: Transfer Learning](https://cs231n.github.io/transfer-learning/)
 
----
-*Wygenerowano z pomocą Claude (Anthropic)*
+
