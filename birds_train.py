@@ -1,41 +1,3 @@
-"""
-================================================================================
-🐦 KLASYFIKACJA GATUNKÓW PTAKÓW — Transfer Learning
-================================================================================
-
-Projekt edukacyjny: Rozpoznawanie 25 gatunków ptaków za pomocą transfer learningu
-z wykorzystaniem modelu EfficientNet-B0 pretrenowanego na ImageNet.
-
-Autor: Wygenerowano z pomocą Claude (Anthropic)
-Framework: PyTorch + torchvision
-
-CZYM JEST TRANSFER LEARNING?
-----------------------------
-Transfer learning to technika, w której model wytrenowany na dużym zbiorze danych
-(np. ImageNet z 1.2M obrazów i 1000 klas) jest adaptowany do nowego, mniejszego
-zadania. Zamiast trenować od zera, "przenosimy" wiedzę z jednego zadania na drugie.
-
-Korzyści:
-- Szybszy trening (godziny zamiast dni)
-- Mniej danych potrzebnych do dobrego wyniku
-- Lepsze wyniki niż trening od zera
-
-STRUKTURA PROJEKTU:
--------------------
-bird_classification/
-├── train.py              <- Ten skrypt (trening modelu)
-├── notebook.ipynb        <- Jupyter Notebook (krok po kroku)
-├── requirements.txt      <- Zależności
-├── README.md             <- Dokumentacja
-└── data/                 <- Dane (pobierane automatycznie lub ręcznie)
-    ├── train/
-    │   ├── gatunek_1/
-    │   ├── gatunek_2/
-    │   └── ...
-    ├── val/
-    └── test/
-"""
-
 import os
 import copy
 import time
@@ -55,15 +17,6 @@ import matplotlib.pyplot as plt
 import numpy as np
 from collections import defaultdict
 
-
-# ==============================================================================
-# 1. KONFIGURACJA I HIPERPARAMETRY
-# ==============================================================================
-"""
-Hiperparametry to "ustawienia" treningu, które wpływają na jakość modelu.
-Dobór hiperparametrów to często kwestia eksperymentowania.
-"""
-
 def get_config():
     """Zwraca domyślną konfigurację projektu."""
     parser = argparse.ArgumentParser(description='🐦 Klasyfikacja ptaków — Transfer Learning')
@@ -75,7 +28,7 @@ def get_config():
                         help='Ścieżka do zapisu modelu i wyników')
 
     # Hiperparametry treningu
-    parser.add_argument('--num_epochs', type=int, default=20,
+    parser.add_argument('--num_epochs', type=int, default=25,
                         help='Liczba epok treningu (1 epoka = przejście przez cały zbiór)')
     parser.add_argument('--batch_size', type=int, default=32,
                         help='Rozmiar batcha — ile obrazów przetwarzamy naraz')
@@ -94,31 +47,8 @@ def get_config():
 
     return parser.parse_args()
 
-
-# ==============================================================================
-# 2. PRZYGOTOWANIE DANYCH (Data Loading & Augmentation)
-# ==============================================================================
-"""
-AUGMENTACJA DANYCH (Data Augmentation):
-Sztucznie zwiększamy różnorodność danych treningowych poprzez losowe transformacje:
-- Obroty, odbicia, przycięcia
-- Zmiana jasności, kontrastu, nasycenia
-- Normalizacja do wartości oczekiwanych przez pretrenowany model
-
-Dzięki temu model:
-- Jest bardziej odporny na różne warunki zdjęć
-- Mniej się przeuczy (overfitting)
-- Lepiej generalizuje na nowe, niewidziane dane
-"""
-
 def create_data_transforms(image_size=224):
-    """
-    Tworzy transformacje dla zbiorów treningowego, walidacyjnego i testowego.
 
-    WAŻNE: Normalizacja wartościami ImageNet jest KLUCZOWA przy transfer learningu!
-    Model był trenowany na danych znormalizowanych tymi wartościami,
-    więc nasze dane też muszą być tak samo przetworzone.
-    """
     # Średnia i odchylenie standardowe z ImageNet
     imagenet_mean = [0.485, 0.456, 0.406]
     imagenet_std = [0.229, 0.224, 0.225]
@@ -157,22 +87,8 @@ def create_data_transforms(image_size=224):
 
     return data_transforms
 
-
 def load_data(data_dir, data_transforms, batch_size=32, num_workers=4):
-    """
-    Ładuje dane z katalogu o strukturze:
-    data/
-    ├── train/
-    │   ├── American_Robin/
-    │   │   ├── img001.jpg
-    │   │   └── ...
-    │   ├── Blue_Jay/
-    │   └── ...
-    ├── val/
-    └── test/
 
-    ImageFolder automatycznie przypisuje etykiety na podstawie nazw folderów!
-    """
     image_datasets = {}
     dataloaders = {}
     dataset_sizes = {}
@@ -203,35 +119,8 @@ def load_data(data_dir, data_transforms, batch_size=32, num_workers=4):
 
     return dataloaders, dataset_sizes, class_names
 
-
-# ==============================================================================
-# 3. BUDOWA MODELU (Transfer Learning)
-# ==============================================================================
-"""
-STRATEGIA TRANSFER LEARNINGU:
-
-Faza 1 — Feature Extraction (zamrożone warstwy):
-    - Zamrażamy WSZYSTKIE warstwy pretrenowanego modelu
-    - Trenujemy TYLKO nową warstwę klasyfikacyjną (head)
-    - Szybki trening, model uczy się mapować cechy na nasze klasy
-
-Faza 2 — Fine-Tuning (odmrożone warstwy):
-    - Odmrażamy część lub wszystkie warstwy
-    - Trenujemy cały model z NIŻSZYM learning rate
-    - Model dostosowuje nauczone cechy do naszego zadania
-
-DLACZEGO EFFICIENTNET-B0?
-- Doskonały stosunek jakości do rozmiaru (5.3M parametrów)
-- Lepszy niż ResNet50 przy mniejszym rozmiarze
-- Szybki trening i inferencja
-- Świetne wyniki na zadaniach klasyfikacji
-"""
-
 def create_model(num_classes, pretrained=True):
-    """
-    Tworzy model EfficientNet-B0 z pretrenowanymi wagami ImageNet
-    i nową warstwą klasyfikacyjną dostosowaną do naszej liczby klas.
-    """
+
     print("\n🔧 Budowanie modelu...")
 
     # Krok 1: Ładujemy pretrenowany EfficientNet-B0
@@ -272,15 +161,7 @@ def create_model(num_classes, pretrained=True):
 
     return model
 
-
 def unfreeze_model(model, num_layers_to_unfreeze=None):
-    """
-    Odmraża warstwy modelu do fine-tuningu.
-
-    Args:
-        model: Model do odmrożenia
-        num_layers_to_unfreeze: Ile ostatnich warstw odmrozić (None = wszystkie)
-    """
     if num_layers_to_unfreeze is None:
         # Odmrażamy WSZYSTKIE warstwy
         for param in model.parameters():
@@ -298,32 +179,8 @@ def unfreeze_model(model, num_layers_to_unfreeze=None):
     total = sum(p.numel() for p in model.parameters())
     print(f"  📊 Teraz trenowalnych: {trainable:,} / {total:,} parametrów")
 
-
-# ==============================================================================
-# 4. PĘTLA TRENINGOWA
-# ==============================================================================
-"""
-Pętla treningowa to serce każdego projektu ML. W każdej epoce:
-
-1. TRENING: Model widzi wszystkie dane treningowe
-   - Forward pass: model generuje predykcje
-   - Obliczamy stratę (loss) — jak bardzo model się myli
-   - Backward pass: obliczamy gradienty (kierunek poprawy)
-   - Aktualizujemy wagi modelu
-
-2. WALIDACJA: Sprawdzamy jakość na danych, których model nie widział
-   - Bez obliczania gradientów (torch.no_grad())
-   - Porównujemy z poprzednimi wynikami
-   - Zapisujemy najlepszy model (checkpoint)
-"""
-
 class EarlyStopping:
-    """
-    Early Stopping — zatrzymuje trening, gdy model przestaje się poprawiać.
-
-    Monitoruje metrykę walidacyjną i jeśli przez 'patience' epok nie ma poprawy,
-    zatrzymuje trening. Zapobiega przeuczeniu (overfitting).
-    """
+   
     def __init__(self, patience=5, min_delta=0.001):
         self.patience = patience
         self.min_delta = min_delta
@@ -343,7 +200,6 @@ class EarlyStopping:
         else:
             self.best_score = val_score
             self.counter = 0
-
 
 def train_one_epoch(model, dataloader, criterion, optimizer, device, dataset_size):
     """Trenuje model przez jedną epokę."""
@@ -405,14 +261,8 @@ def validate(model, dataloader, criterion, device, dataset_size):
 
     return epoch_loss, epoch_acc.item()
 
-
 def train_model(model, dataloaders, dataset_sizes, config, device, phase='feature_extraction'):
-    """
-    Główna funkcja treningowa.
 
-    Args:
-        phase: 'feature_extraction' (zamrożone warstwy) lub 'fine_tuning' (odmrożone)
-    """
     # Funkcja straty — CrossEntropyLoss dla klasyfikacji wieloklasowej
     criterion = nn.CrossEntropyLoss()
 
@@ -504,15 +354,8 @@ def train_model(model, dataloaders, dataset_sizes, config, device, phase='featur
     return model, dict(history)
 
 
-# ==============================================================================
-# 5. EWALUACJA I WIZUALIZACJA
-# ==============================================================================
-
 def evaluate_model(model, dataloader, dataset_size, class_names, device):
-    """
-    Kompleksowa ewaluacja modelu na zbiorze testowym.
-    Oblicza accuracy, macierz pomyłek (confusion matrix) i metryki per klasa.
-    """
+
     model.eval()
     all_preds = []
     all_labels = []
@@ -638,24 +481,8 @@ def plot_confusion_matrix(cm, class_names, output_dir):
     plt.close()
     print(f"  📊 Macierz pomyłek zapisana: {plot_path}")
 
-
-# ==============================================================================
-# 6. FUNKCJA PREDIKCJI (dla nowych obrazów)
-# ==============================================================================
-
 def predict_image(model, image_path, class_names, data_transforms, device):
-    """
-    Przewiduje gatunek ptaka na podstawie pojedynczego zdjęcia.
-
-    Args:
-        image_path: Ścieżka do zdjęcia
-        class_names: Lista nazw gatunków
-
-    Returns:
-        predicted_class: Nazwa przewidzianego gatunku
-        confidence: Pewność predykcji (0-1)
-        top5: Top 5 predykcji z pewnościami
-    """
+   
     from PIL import Image
 
     model.eval()
@@ -683,20 +510,7 @@ def predict_image(model, image_path, class_names, data_transforms, device):
 
     return predicted_class, confidence, top5
 
-
-# ==============================================================================
-# 7. GENEROWANIE PRZYKŁADOWYCH DANYCH (demo)
-# ==============================================================================
-
 def create_demo_data(data_dir, num_classes=25, images_per_class=20):
-    """
-    Tworzy przykładowe dane demonstracyjne (kolorowe prostokąty).
-    W prawdziwym projekcie użyj prawdziwych zdjęć ptaków!
-
-    Zalecane datasety:
-    - Kaggle "Birds 525 Species": https://www.kaggle.com/datasets/gpiosenka/100-bird-species
-    - CUB-200-2011: https://www.vision.caltech.edu/datasets/cub_200_2011/
-    """
     from PIL import Image
     import random
 
@@ -744,11 +558,6 @@ def create_demo_data(data_dir, num_classes=25, images_per_class=20):
 
     print("  ⚠️  UWAGA: To są dane demo! W prawdziwym projekcie użyj zdjęć ptaków.")
     return bird_species
-
-
-# ==============================================================================
-# 8. MAIN — URUCHOMIENIE PROJEKTU
-# ==============================================================================
 
 def main():
     """Główna funkcja uruchamiająca cały pipeline."""
