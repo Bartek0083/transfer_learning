@@ -72,6 +72,11 @@ data/
 Do projektu zostały dołączone skrypty `select_species.py` `split_dataset.py` pozwalające na łatwiejsze kopiowanie obrazów z datasetu CUD-200-2011 do folderu data w sposób randomowy.
 Wystarczy że do projektu wrzucisz folder CUD-200-2011/images z pobranej paczki (patrz Opcja B).
 
+#### Podział datasetu CUD-200-2011 (jeśli wybierzesz opcje B)
+```bash
+python split_dataset.py --source ./CUB_200_2011/images --output ./data
+```
+
 #### Ograniczenie od 1 do 200 gatunków
 Jeśli chcesz możesz wybrać dowolne ograniczenie sprawdzanych gatunków np. 50 
 
@@ -90,10 +95,6 @@ python birds_train.py
 python birds_train.py --num_epochs 30 --batch_size 64 --learning_rate 0.001
 ```
 
-#### Jupyter Notebook:
-```bash
-jupyter notebook notebook.ipynb
-```
 
 ## ⚙️ Hiperparametry
 
