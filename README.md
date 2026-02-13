@@ -67,7 +67,7 @@ data/
 ```
 #### Skrypty do pomocy
 Do projektu zostały dołączone skrypty `select_species.py` `split_dataset.py` pozwalające na łatwiejsze kopiowanie obrazów z datasetu CUD-200-2011 do folderu data w sposób randomowy.
-Wystarczy że do projektu wrzucisz folder CUD-200-2011/images.
+Wystarczy że do projektu wrzucisz folder CUD-200-2011/images z pobranej paczki (patrz Opcja B).
 
 #### Ograniczenie od 1 do 200 gatunków
 Jeśli chcesz możesz wybrać dowolne ograniczenie sprawdzanych gatunków np. 50 
