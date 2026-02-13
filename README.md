@@ -19,7 +19,7 @@ bird_classification/
 ├── notebook.ipynb        # Jupyter Notebook (krok po kroku)
 ├── requirements.txt      # Zależności Python
 ├── README.md             # Ten plik
-├── data/                 # Dane (do pobrania)
+├── data/                 # Dane (do pobrania z Opcji B.)
 │   ├── train/
 │   ├── val/
 │   └── test/
