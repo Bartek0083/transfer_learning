@@ -19,7 +19,7 @@ bird_classification/
 ├── notebook.ipynb        # Jupyter Notebook (krok po kroku)
 ├── requirements.txt      # Zależności Python
 ├── README.md             # Ten plik
-├── data/                 # Dane (do pobrania z Opcji B.)
+├── data/                 # Dane (tworzone za pomocą skryptu split_dataset.py)
 │   ├── train/
 │   ├── val/
 │   └── test/
@@ -27,7 +27,12 @@ bird_classification/
     ├── bird_classifier.pth
     ├── metadata.json
     ├── training_history.png
-    └── confusion_matrix.png
+    └── predictions/              ← Wyniki z predict.py
+        ├── confusion_matrix.png
+        ├── f1_per_class.png
+        ├── error_examples.png
+        ├── correct_examples.png
+        └── report.json
 ```
 
 ## 🚀 Szybki start
@@ -61,8 +66,15 @@ data/
 └── test/
 ```
 #### Skrypty do pomocy
-Do projektu zostały dołączone skrypty pozwalające na łatwiejsze kopiowanie obrazów z datasetu CUD-200-2011 w sposób randomowy.
+Do projektu zostały dołączone skrypty pozwalające na łatwiejsze kopiowanie obrazów z datasetu CUD-200-2011 do folderu data w sposób randomowy.
+Wystarczy że do projektu wrzucisz folder CUD-200-2011/images.
 
+#### Ograniczenie do 1-200 gatunków
+Jeśli chcesz możesz wybrać dowolne ograniczenie np.50 
+
+```bash
+python select_species.py --data_dir ./data --num_species 50
+```
 ### 3. Trening
 
 #### Skrypt Python:
