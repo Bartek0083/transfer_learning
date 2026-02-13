@@ -60,6 +60,8 @@ data/
 ├── val/
 └── test/
 ```
+#### Skrypty do pomocy
+Do projektu zostały dołączone skrypty pozwalające na łatwiejsze kopiowanie obrazów z datasetu CUD-200-2011 w sposób randomowy.
 
 ### 3. Trening
 
