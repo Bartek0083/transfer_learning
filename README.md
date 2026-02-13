@@ -15,7 +15,7 @@ transfer learningu w dwóch fazach:
 
 ```
 bird_classification/
-├── train.py              # Skrypt treningowy (CLI)
+├── birds_train.py              # Skrypt treningowy (CLI)
 ├── notebook.ipynb        # Jupyter Notebook (krok po kroku)
 ├── requirements.txt      # Zależności Python
 ├── README.md             # Ten plik
@@ -65,12 +65,12 @@ data/
 
 #### Skrypt Python:
 ```bash
-python train.py
+python birds_train.py
 ```
 
 #### Z parametrami:
 ```bash
-python train.py --num_epochs 30 --batch_size 64 --learning_rate 0.001
+python birds_train.py --num_epochs 30 --batch_size 64 --learning_rate 0.001
 ```
 
 #### Jupyter Notebook:
