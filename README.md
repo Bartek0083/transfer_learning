@@ -5,7 +5,7 @@ i modelu **EfficientNet-B0** pretrenowanego na ImageNet.
 
 ## 📋 Opis projektu
 
-Projekt rozpoznaje **25 gatunków ptaków** na zdjęciach. Wykorzystuje technikę
+Projekt rozpoznaje **30 gatunków ptaków** na zdjęciach. Wykorzystuje technikę
 transfer learningu w dwóch fazach:
 
 1. **Feature Extraction** — zamrożone warstwy bazowe, trening nowego klasyfikatora
@@ -46,7 +46,6 @@ Skrypt automatycznie wygeneruje syntetyczne dane demo. Wystarczy uruchomić tren
 #### Opcja B: Prawdziwe dane (zalecane)
 Pobierz dataset i umieść w katalogu `data/`:
 
-- **[Birds 525 Species (Kaggle)](https://www.kaggle.com/datasets/gpiosenka/100-bird-species)** — 525 gatunków, ~90k obrazów
 - **[CUB-200-2011](https://www.vision.caltech.edu/datasets/cub_200_2011/)** — 200 gatunków, ~12k obrazów
 
 Dane powinny mieć strukturę:
@@ -130,16 +129,6 @@ predicted, confidence, top5 = predict_image(
 
 print(f'Gatunek: {predicted} ({confidence:.1%})')
 ```
-
-## 📚 Dalsze kroki
-
-1. **Lepsze dane** — użyj prawdziwego datasetu (Kaggle Birds 525)
-2. **Większy model** — EfficientNet-B3 lub B4
-3. **Zaawansowana augmentacja** — Mixup, CutMix, RandomErasing
-4. **Test Time Augmentation** — uśrednianie predykcji
-5. **Ensemble** — połączenie kilku modeli
-6. **Interfejs webowy** — Gradio lub Streamlit
-7. **Deployment** — ONNX, TorchScript, lub TensorRT
 
 ## 📖 Zasoby edukacyjne
 
