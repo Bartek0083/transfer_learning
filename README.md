@@ -18,6 +18,9 @@ bird_classification/
 ├── birds_train.py              # Skrypt treningowy (CLI)
 ├── notebook.ipynb        # Jupyter Notebook (krok po kroku)
 ├── requirements.txt      # Zależności Python
+├── split_dataset.py
+├── select_species.py
+├── predict.py
 ├── README.md             # Ten plik
 ├── data/                 # Dane (tworzone za pomocą skryptu split_dataset.py)
 │   ├── train/
