@@ -19,7 +19,7 @@ from collections import defaultdict
 
 def get_config():
     """Zwraca domyślną konfigurację projektu."""
-    parser = argparse.ArgumentParser(description='🐦 Klasyfikacja ptaków — Transfer Learning')
+    parser = argparse.ArgumentParser(description='Klasyfikacja ptaków — Transfer Learning')
 
     # Ścieżki
     parser.add_argument('--data_dir', type=str, default='./data',
@@ -667,4 +667,5 @@ def main():
 
 
 if __name__ == '__main__':
+
     main()
