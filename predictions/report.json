@@ -1,0 +1,252 @@
+{
+  "top1_accuracy": 0.9130434782608695,
+  "top5_accuracy": 0.9855072463768116,
+  "avg_precision": 0.9210858585858586,
+  "avg_recall": 0.9148148148148149,
+  "avg_f1": 0.9151787147607582,
+  "total_images": 276,
+  "total_errors": 24,
+  "num_classes": 30,
+  "class_metrics": [
+    {
+      "name": "001.Black_footed_Albatross",
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "support": 9,
+      "correct": 9
+    },
+    {
+      "name": "013.Bobolink",
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "support": 9,
+      "correct": 9
+    },
+    {
+      "name": "014.Indigo_Bunting",
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "support": 9,
+      "correct": 9
+    },
+    {
+      "name": "017.Cardinal",
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "support": 10,
+      "correct": 10
+    },
+    {
+      "name": "020.Yellow_breasted_Chat",
+      "precision": 0.8181818181818182,
+      "recall": 0.9,
+      "f1": 0.8571428571428572,
+      "support": 10,
+      "correct": 9
+    },
+    {
+      "name": "024.Red_faced_Cormorant",
+      "precision": 1.0,
+      "recall": 0.7777777777777778,
+      "f1": 0.8750000000000001,
+      "support": 9,
+      "correct": 7
+    },
+    {
+      "name": "033.Yellow_billed_Cuckoo",
+      "precision": 1.0,
+      "recall": 0.9,
+      "f1": 0.9473684210526316,
+      "support": 10,
+      "correct": 9
+    },
+    {
+      "name": "043.Yellow_bellied_Flycatcher",
+      "precision": 0.8,
+      "recall": 0.8,
+      "f1": 0.8000000000000002,
+      "support": 10,
+      "correct": 8
+    },
+    {
+      "name": "047.American_Goldfinch",
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "support": 9,
+      "correct": 9
+    },
+    {
+      "name": "052.Pied_billed_Grebe",
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "support": 9,
+      "correct": 9
+    },
+    {
+      "name": "053.Western_Grebe",
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "support": 9,
+      "correct": 9
+    },
+    {
+      "name": "056.Pine_Grosbeak",
+      "precision": 0.9,
+      "recall": 1.0,
+      "f1": 0.9473684210526316,
+      "support": 9,
+      "correct": 9
+    },
+    {
+      "name": "065.Slaty_backed_Gull",
+      "precision": 0.8,
+      "recall": 1.0,
+      "f1": 0.888888888888889,
+      "support": 8,
+      "correct": 8
+    },
+    {
+      "name": "070.Green_Violetear",
+      "precision": 1.0,
+      "recall": 0.8888888888888888,
+      "f1": 0.9411764705882353,
+      "support": 9,
+      "correct": 8
+    },
+    {
+      "name": "073.Blue_Jay",
+      "precision": 0.9,
+      "recall": 1.0,
+      "f1": 0.9473684210526316,
+      "support": 9,
+      "correct": 9
+    },
+    {
+      "name": "080.Green_Kingfisher",
+      "precision": 1.0,
+      "recall": 0.8888888888888888,
+      "f1": 0.9411764705882353,
+      "support": 9,
+      "correct": 8
+    },
+    {
+      "name": "087.Mallard",
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "support": 9,
+      "correct": 9
+    },
+    {
+      "name": "094.White_breasted_Nuthatch",
+      "precision": 0.8,
+      "recall": 0.8888888888888888,
+      "f1": 0.8421052631578948,
+      "support": 9,
+      "correct": 8
+    },
+    {
+      "name": "106.Horned_Puffin",
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "support": 9,
+      "correct": 9
+    },
+    {
+      "name": "112.Great_Grey_Shrike",
+      "precision": 1.0,
+      "recall": 0.8888888888888888,
+      "f1": 0.9411764705882353,
+      "support": 9,
+      "correct": 8
+    },
+    {
+      "name": "119.Field_Sparrow",
+      "precision": 0.7777777777777778,
+      "recall": 0.7,
+      "f1": 0.7368421052631577,
+      "support": 10,
+      "correct": 7
+    },
+    {
+      "name": "133.White_throated_Sparrow",
+      "precision": 0.7272727272727273,
+      "recall": 0.8888888888888888,
+      "f1": 0.7999999999999999,
+      "support": 9,
+      "correct": 8
+    },
+    {
+      "name": "144.Common_Tern",
+      "precision": 1.0,
+      "recall": 0.8888888888888888,
+      "f1": 0.9411764705882353,
+      "support": 9,
+      "correct": 8
+    },
+    {
+      "name": "153.Philadelphia_Vireo",
+      "precision": 0.7272727272727273,
+      "recall": 0.8,
+      "f1": 0.761904761904762,
+      "support": 10,
+      "correct": 8
+    },
+    {
+      "name": "154.Red_eyed_Vireo",
+      "precision": 0.875,
+      "recall": 0.7777777777777778,
+      "f1": 0.823529411764706,
+      "support": 9,
+      "correct": 7
+    },
+    {
+      "name": "169.Magnolia_Warbler",
+      "precision": 0.8181818181818182,
+      "recall": 0.9,
+      "f1": 0.8571428571428572,
+      "support": 10,
+      "correct": 9
+    },
+    {
+      "name": "170.Mourning_Warbler",
+      "precision": 1.0,
+      "recall": 0.7777777777777778,
+      "f1": 0.8750000000000001,
+      "support": 9,
+      "correct": 7
+    },
+    {
+      "name": "188.Pileated_Woodpecker",
+      "precision": 0.8888888888888888,
+      "recall": 0.8888888888888888,
+      "f1": 0.8888888888888888,
+      "support": 9,
+      "correct": 8
+    },
+    {
+      "name": "195.Carolina_Wren",
+      "precision": 0.8,
+      "recall": 0.8888888888888888,
+      "f1": 0.8421052631578948,
+      "support": 9,
+      "correct": 8
+    },
+    {
+      "name": "200.Common_Yellowthroat",
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "support": 9,
+      "correct": 9
+    }
+  ]
+}
